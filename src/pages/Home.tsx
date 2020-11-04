@@ -21,7 +21,7 @@ const Home = React.memo(() => {
   return (
     <Wrapper>
       <Title>Upload</Title>
-      <Video autoPlay ref={videoRef} />
+      <Video autoPlay playsInline ref={videoRef} />
       <DashedContainer onClick={handleClickTakePhoto}>
         <i className="ri-camera-fill ri-xl" />
         <span>Take your photo</span>

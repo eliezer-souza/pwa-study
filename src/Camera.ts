@@ -10,34 +10,14 @@ export class Webcam {
     this.canvasElement = canvasElement;
   }
 
-  // adjustVideoSize(width: number, height: number): void {
-  //   const aspectRatio = width / height;
-  //   if (width >= height) {
-  //     this.webcamElement && this.webcamElement.width
-  //       ? (this.webcamElement.width = aspectRatio * this.webcamElement.height)
-  //       : 0;
-  //   } else if (width < height) {
-  //     this.webcamElement && this.webcamElement.height
-  //       ? (this.webcamElement.height = this.webcamElement.width / aspectRatio)
-  //       : 0;
-  //   }
-  // }
-
   async setup() {
     return new Promise((resolve, reject) => {
       if (navigator.mediaDevices.getUserMedia !== undefined) {
         navigator.mediaDevices
-          .getUserMedia({ audio: false, video: { facingMode: "environment" } })
+          .getUserMedia({ audio: false, video: { facingMode: "user" } })
           .then((mediaStream) => {
             if (this.webcamElement) {
-              if ("srcObject" in this.webcamElement) {
-                this.webcamElement.srcObject = mediaStream;
-                console.log("here");
-              } else {
-                // For older browsers withouth the srcObject.
-                //this.webcamElement.src = window.URL.createObjectURL(mediaStream);
-              }
-
+              this.webcamElement.srcObject = mediaStream;
               this.webcamElement.onloadedmetadata = (e) => {
                 this.webcamElement?.play();
               };
