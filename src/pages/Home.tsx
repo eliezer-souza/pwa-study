@@ -3,26 +3,25 @@ import { Wrapper, Title, DashedContainer, Video, Image } from "./styles";
 import { Webcam } from "../Camera";
 
 const Home = React.memo(() => {
-  let webcam: Webcam;
-  const webcamRef = useRef<HTMLVideoElement>(null);
-  const [photo, setPhoto] = useState("");
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [photo, setPhoto] = useState<string | undefined>("");
+  const cameraRef = useRef<Webcam>();
 
   useEffect(() => {
     const canvasElement = document.createElement("canvas");
-    webcam = new Webcam(webcamRef.current, canvasElement);
-    webcam.setup().catch((e) => console.log(e));
-  }, [webcamRef]);
+    cameraRef.current = new Webcam(videoRef.current, canvasElement);
+    cameraRef.current.setup().catch((e) => console.log(e));
+  }, [videoRef]);
 
   const handleClickTakePhoto = useCallback(() => {
-    const { base64 } = webcam.takeBase64Photo();
-    setPhoto(base64);
+    const photo = cameraRef.current?.takeBase64Photo();
+    setPhoto(photo?.base64);
   }, []);
 
   return (
     <Wrapper>
       <Title>Upload</Title>
-      <Video autoPlay ref={webcamRef} />
-
+      <Video autoPlay ref={videoRef} />
       <DashedContainer onClick={handleClickTakePhoto}>
         <i className="ri-camera-fill ri-xl" />
         <span>Take your photo</span>
